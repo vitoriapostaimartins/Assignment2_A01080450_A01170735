@@ -1,2 +1,6 @@
-class ItemFactory(ABC.abc):
-    pass
+import abc
+
+
+class ItemFactory(abc.ABC):
+    def __init__(self):
+        pass
