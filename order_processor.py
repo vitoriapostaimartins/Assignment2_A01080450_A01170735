@@ -10,6 +10,18 @@ from halloween_factory import HalloweenFactory
 from item_factory import ItemFactory
 from order import Order
 
+# holidayenum
+class HolidayEnum(Enum):
+    CHRISTMAS = 'Christmas'
+    HALLOWEEN = 'Halloween'
+    EASTER = 'Easter'
+
+
+class ItemEnum(Enum):
+    TOY = "Toy"
+    STUFFED_ANIMAL = "StuffedAnimal"
+    CANDY = "Candy"
+
 
 class OrderProcessor:
     def __init__(self):
@@ -33,7 +45,6 @@ class OrderProcessor:
 
         return orders
 
-
     @staticmethod
     def read_columns(data):
         has_batteries = pd.DataFrame(data, columns=['has_batteries'])
@@ -42,8 +53,26 @@ class OrderProcessor:
 
 # itemprocessor
 class ItemProcessor:
-    def __init__(self):
-        pass
+
+    @staticmethod
+    def process_items(orders):
+        items = []
+        for order in orders:
+            factory = order._factory
+
+            dict_methods = {
+                ItemEnum.TOY.value: factory.make_toy,
+                ItemEnum.STUFFED_ANIMAL.value: factory.make_stuffed_animal,
+                ItemEnum.CANDY.value: factory.make_candy
+            }
+
+            item_type = order._item
+            item_method = dict_methods.get(item_type)
+            item_attributes = order.item_attributes
+            item = item_method(**item_attributes)
+            print(item)
+            items.append(item)
+        return items
 
 
 # factory mapping
@@ -60,8 +89,3 @@ class FactoryMapping:
         return factory_class
 
 
-# holidayenum
-class HolidayEnum(Enum):
-    CHRISTMAS = 'Christmas'
-    HALLOWEEN = 'Halloween'
-    EASTER = 'Easter'
