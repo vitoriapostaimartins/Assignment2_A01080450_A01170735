@@ -1,9 +1,13 @@
-from store import Store
+from store import Store, DailyTransactionReport
 
 
 class Menu:
     def __init__(self):
         self._store = Store()
+
+    @property
+    def store(self):
+        return self._store
 
     def _show_options(self):
         print("Menu:\n"
@@ -13,6 +17,10 @@ class Menu:
         choice = int(input("Please choose an option from the above"))
         return choice
 
+    def _exit(self):
+        orders = self.store.orders
+        DailyTransactionReport.create_report(orders)
+
     def show_menu(self):
         print("Welcome the Store")
         input_map = {}
@@ -21,6 +29,7 @@ class Menu:
             choice = self._show_options()
 
             if choice == 3:
+                self._exit()
                 return
             elif choice > 3 or choice < 0:
                 print("\nInvalid choice. Please try again.")
@@ -41,13 +50,11 @@ class Menu:
             operation()
 
     def _process_orders(self):
-        order_name = "orders.xlsx"
+        order_name = "orders_checkinventory.xlsx"
         self._store.process_orders(order_name)
 
     def _check_inventory(self):
-        print("Checking inventory")
-        pass
-
+        self.store.check_inventory()
 
 def main():
     menu = Menu()

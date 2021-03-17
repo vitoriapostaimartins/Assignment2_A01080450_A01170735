@@ -1,14 +1,14 @@
 # orderprocessor
-from enum import auto, Enum
+from enum import Enum
 import pandas as pd
-import openpyxl
-import collections as co
 
 from christmas_factory import ChristmasFactory
 from easter_factory import EasterFactory
 from halloween_factory import HalloweenFactory
 from item_factory import ItemFactory
+from items import InvalidDataError
 from order import Order
+
 
 # holidayenum
 class HolidayEnum(Enum):
@@ -58,7 +58,7 @@ class ItemProcessor:
     def process_items(orders):
         items = []
         for order in orders:
-            factory = order._factory
+            factory = order.factory
 
             dict_methods = {
                 ItemEnum.TOY.value: factory.make_toy,
@@ -66,12 +66,18 @@ class ItemProcessor:
                 ItemEnum.CANDY.value: factory.make_candy
             }
 
-            item_type = order._item
+            item_type = order.item
             item_method = dict_methods.get(item_type)
             item_attributes = order.item_attributes
-            item = item_method(**item_attributes)
-            print(item)
-            items.append(item)
+
+            for x in range(0, 100):
+                try:
+                    item = item_method(**item_attributes)
+                    items.append(item)
+                except InvalidDataError as e:
+                    order.error = e
+                    break
+
         return items
 
 
@@ -87,5 +93,3 @@ class FactoryMapping:
     def get_factory(self, item_type) -> ItemFactory:
         factory_class = self._factory_mapper.get(item_type)
         return factory_class
-
-
