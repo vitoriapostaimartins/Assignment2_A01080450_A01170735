@@ -2,10 +2,10 @@ import abc
 
 
 class Item(abc.ABC):
-    def __init__(self, product_id=-1, name="", description="", **item_attributes):
-        self._product_id = product_id
-        self._name = name
-        self._description = description
+    def __init__(self, **item_attributes):
+        self._product_id = item_attributes.get("product_id")
+        self._name = item_attributes.get("name")
+        self._description = item_attributes.get("description")
         self._item_attributes = item_attributes
 
     @property
@@ -24,6 +24,12 @@ class Item(abc.ABC):
     def description(self):
         return self._description
 
+    @staticmethod
+    def check_attributes(item_attributes, dictionary):
+        for key, value in dictionary:
+            if item_attributes.get(key) not in value[0]:
+                raise InvalidDataError(f"{value[1]}")
+
     def __str__(self):
         kwargs_items = "Kwargs Items: \n"
         for key, item in self.item_attributes.items():
@@ -37,41 +43,53 @@ class Item(abc.ABC):
 
 
 class Toy(Item):
-    def __init__(self, battery_operated=False, min_age=0, **kwargs):
-        super().__init__(**kwargs)
-        self._battery_operated = battery_operated
-        self._min_age = min_age
+    battery_options = ["Y", "N"]
+    age_range = list(range(0, 16))
 
+    attributes = {
+        "has_batteries": [battery_options, f"Has batteries must be indicated as {' or '.join(battery_options)}"],
+        "min_age": [age_range, f"Minimum age must be between {age_range[0]} and {age_range[-1]}"]
+    }
 
-# stuffed animals
+    def __init__(self, **item_attributes):
+        try:
+            super().check_attributes(item_attributes, Toy.attributes.items())
+        except InvalidDataError as e:
+            raise e
+        self._has_batteries = item_attributes.get("has_batteries")
+        self._min_age = item_attributes.get("min_age")
+        super().__init__(**item_attributes)
+
 
 class StuffedAnimal(Item):
-    stuffing_types = ["Polyester Fiberfill", "Wool"]
-    sizes = ["Small", "Medium", "Large"]
+    stuffing_types = ["Polyester Fibrefill", "Wool"]
+    sizes = ["S", "M", "L"]
     fabric_types = ["Linen", "Cotton", "Acrylic"]
 
-    def __init__(self, stuffing=False, size="", fabric="", **kwargs):
-        super().__init__(**kwargs)
+    attributes = {"stuffing": [stuffing_types, f"Stuffing can only be {', '.join(stuffing_types)}"],
+                  "size": [sizes, f"Sizes can only be {', '.join(sizes)}"],
+                  "fabric": [fabric_types, f"Fabric types can only be {', '.join(fabric_types)}"]}
 
-        if stuffing not in StuffedAnimal.stuffing_types:
-            raise InvalidDataError(f"Stuffing can only be {', '.join(StuffedAnimal.stuffing_types)}")
-        self._stuffing = stuffing  # fiberfill or wool
+    def __init__(self, **item_attributes):
 
-        if size not in StuffedAnimal.sizes:
-            raise InvalidDataError(f"Sizes can only be {', '.join(StuffedAnimal.sizes)}")
-        self._size = size
+        try:
+            super().check_attributes(item_attributes, StuffedAnimal.attributes.items())
+        except InvalidDataError as e:
+            raise e
 
-        if fabric not in StuffedAnimal.fabric_types:
-            raise InvalidDataError(f"Fabric types can only be {', '.join(StuffedAnimal.fabric_types)}")
-        self._fabric = fabric
+        self._stuffing = item_attributes.get("stuffing")
+        self._size = item_attributes.get("size")
+        self._fabric = item_attributes.get("fabric")
+
+        super().__init__(**item_attributes)
 
 
-# candy
 class Candy(Item):
-    def __init__(self, has_nuts=False, lactose_free=False, **kwargs):
-        super().__init__(**kwargs)
-        self._has_nuts = has_nuts
-        self._lactose_free = lactose_free
+
+    def __init__(self, **item_attributes):
+        self._has_nuts = item_attributes.get("has_nuts")
+        self._lactose_free = item_attributes.get("lactose_free")
+        super().__init__(**item_attributes)
 
 
 class InvalidDataError(Exception):

@@ -21,27 +21,69 @@ class ChristmasFactory(ItemFactory):
 
 # santa's workshop
 class SantasWorkshop(Toy):
-    def __init__(self, item_attribute):
-        super().__init__(**item_attribute)
+
+    num_rooms = list(range(0, 100))
+
+    attributes = {
+        "has_batteries": [["N"], "Santa's workshop doesn't have batteries. Property has_batteries should be 'N'."],
+        "num_rooms": [num_rooms, f"Number of rooms must be between {num_rooms[0]} and {num_rooms[-1]}"]
+    }
+
+    def __init__(self, item_attributes):
+
+        try:
+            item_attributes['dimensions'] = list(map(int, item_attributes.get("dimensions").split(",")))
+        except ValueError:
+            raise InvalidDataError("Dimensions have to be non-zero positive numbers")
+
+        try:
+            super().check_attributes(item_attributes, SantasWorkshop.attributes.items())
+        except InvalidDataError as e:
+            raise e
+
+        for measurement in item_attributes.get("dimensions"):
+            if measurement <= 0:
+                raise InvalidDataError("Dimensions have to be non-zero positive numbers")
+
+        self._dimensions = item_attributes.get("dimensions")
+        self._num_rooms = item_attributes.get("num_rooms")
+
+        super().__init__(**item_attributes)
 
 
-# reindeer
 class Reindeer(StuffedAnimal):
-    def __init__(self, item_attribute):
-        if item_attribute.get("fabric") != "Cotton":
-            raise InvalidDataError(f"Reindeer have to be made out of Cotton")
-        if item_attribute.get("stuffing") != "Wool":
-            raise InvalidDataError(f"Reindeer have to be stuffed with Wool")
-        if item_attribute.get("has_glow") != "Y":
-            raise InvalidDataError(f"Reindeer have to be have a glow in the dark nose")
-        super().__init__(**item_attribute)
+    attributes = {
+        "fabric": [["Cotton"], "Reindeer have to be made out of Cotton."],
+        "stuffing": [["Wool"], "Reindeer have to be stuffed with Wool."],
+        "has_glow": [["Y"], "Reindeer have to be have a glow in the dark nose. Property has_glow should be 'Y'."]
+    }
+
+    def __init__(self, item_attributes):
+        try:
+            super().check_attributes(item_attributes, Reindeer.attributes.items())
+        except InvalidDataError as e:
+            raise e
+
+        self._has_glow = item_attributes.get("has_glow")
+
+        super().__init__(**item_attributes)
 
 
-# candy canes
 class CandyCane(Candy):
     colours = ["Red", "Green"]
 
+    attributes = {
+        "colour": [colours, f"Colour can only be {' or '.join(colours)}"],
+        "has_nuts": [["N"], "Candy cane does not contain nuts. Property has_nuts should be 'N'."],
+        "has_lactose": [["N"], "Candy cane is lactose free. Property has_lactose should be 'N'."]
+    }
+
     def __init__(self, item_attributes):
-        if item_attributes.get('colour') not in CandyCane.colours:
-            raise InvalidDataError(f"Colour can only be {' or '.join(CandyCane.colours)}")
+        try:
+            super().check_attributes(item_attributes, CandyCane.attributes.items())
+        except InvalidDataError as e:
+            raise e
+
+        self._colour = item_attributes.get('colour')
+
         super().__init__(**item_attributes)

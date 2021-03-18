@@ -2,7 +2,7 @@ import datetime
 import time
 
 from inventory import Inventory
-from order_processor import OrderProcessor, ItemProcessor
+from processors import OrderProcessor, ItemProcessor
 
 
 class Store:
@@ -70,12 +70,14 @@ class DailyTransactionReport:
 
             for order in orders:
                 order_no = order.order_number
-                if order.error:
-                    data += f"Order {order_no}, Could not process order data was corrupted, {order.error}\n"
+
                 order_item = order.item
                 order_product_id = order.item_attributes.get("product_id")
                 order_name = order.name
                 order_quantity = order.item_attributes.get("quantity")
-                data += f"Order {order_no}, Item {order_item}, Product ID {order_product_id}, Name \"{order_name}\", Quantity {order_quantity}\n"
+                if order.error:
+                    data += f"Order {order_no}, Could not process order data was corrupted, {order.error}\n"
+                else:
+                    data += f"Order {order_no}, Item {order_item}, Product ID {order_product_id}, Name \"{order_name}\", Quantity {order_quantity}\n"
 
             text_file.write(data)
