@@ -12,17 +12,33 @@ class Item(abc.ABC):
     def product_id(self):
         return self._product_id
 
+    @product_id.setter
+    def product_id(self, value):
+        self._product_id = value
+
     @property
     def item_attributes(self):
         return self._item_attributes
+
+    @item_attributes.setter
+    def item_attributes(self, value):
+        self._item_attributes = value
 
     @property
     def name(self):
         return self._name
 
+    @name.setter
+    def name(self, value):
+        self._name = value
+
     @property
     def description(self):
         return self._description
+
+    @description.setter
+    def description(self, value):
+        self._description = value
 
     @staticmethod
     def check_attributes(item_attributes, dictionary):
@@ -36,9 +52,9 @@ class Item(abc.ABC):
             if item is not None:
                 kwargs_items += f"\n {key}: {item}"
 
-        return f"product id:{self._product_id} \n" \
-               f"name:{self._name} \n" \
-               f"description:{self._description}\n" \
+        return f"product id:{self.product_id} \n" \
+               f"name:{self.name} \n" \
+               f"description:{self.description}\n" \
                f"{kwargs_items}"
 
 
@@ -93,5 +109,8 @@ class Candy(Item):
 
 
 class InvalidDataError(Exception):
-    def __init__(self, error_string):
-        super().__init__("InvalidDataError - " + error_string)
+    def __init__(self, error_string, order=None):
+        error_string = "InvalidDataError - " + error_string
+        if order is not None:
+            order.error = error_string
+        super().__init__(error_string)

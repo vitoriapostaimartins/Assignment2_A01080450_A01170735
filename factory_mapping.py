@@ -25,6 +25,10 @@ class FactoryMapping:
             HolidayEnum.EASTER.value: EasterFactory()
         }
 
+    @property
+    def factory_mapper(self):
+        return self._factory_mapper
+
     def get_factory(self, item_type) -> ItemFactory:
-        factory_class = self._factory_mapper.get(item_type)
+        factory_class = self.factory_mapper.get(item_type)
         return factory_class

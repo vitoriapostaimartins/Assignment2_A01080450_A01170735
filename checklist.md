@@ -1,6 +1,6 @@
 ##Error Handling
 ### Item Attributes
-- [ ] check for negative numbers
+- [x] check for negative numbers
   - [x] quantity (Each order) - TEST
   - [x] dimensions and number of rooms (Santa's workshop)
   - [x] pack size (Creme eggs)
@@ -9,11 +9,11 @@
   - [x] number of sound effects (Robot Bunny)
   - [x] age (Toys)
   
-- [ ] check for empty columns in excel input (for required attributes)
+- [x] check for empty columns in excel input (for required attributes)
     - has_batteries (Toys)
     - basic mandatory attributes
   
-- [ ] strings when we expect numbers
+- [x] strings when we expect numbers
   - [x] quantity (Each order)
   - [x] dimensions and number of rooms (Santa's workshop)
   - [x] pack size (Creme eggs)
@@ -22,12 +22,18 @@
   - [x] number of sound effects (Robot Bunny)
   - [x] age (Toys)
 
-- [ ] check properties that are defined/required
+- [x] check properties that are defined/required
   - e.g. dancing skeleton glows in the dark, or candy canes contain nuts, etc.
-  
   
 - [x] check for properties that can only be specific types
   
+### Order Attributes
+- [x] Check for empty values
+  - Holiday (factory)
+  - Item type
+  - product Id, name, description, order id
+- [x] Empty string values
+
 ## Others
 - [ ] Docstrings/comments
 - [ ] visibilities

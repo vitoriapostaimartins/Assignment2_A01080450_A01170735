@@ -9,21 +9,26 @@ class Inventory:
     def items(self):
         return self._items
 
+    @items.setter
+    def items(self, value):
+        self._items = value
+
+
     def add_to_inventory(self, items):
         for item in items:
             product_id = item.product_id
-            if self._items.get(product_id):
-                self._items[product_id] += 1
+            if self.items.get(product_id):
+                self.items[product_id] += 1
             else:
-                self._items[product_id] = 1
+                self.items[product_id] = 1
 
     def remove_from_inventory(self, product_id, quantity):
         # check inventory for product id
-        if self._items.get(product_id):
-            self._items[product_id] -= quantity
+        if self.items.get(product_id):
+            self.items[product_id] -= quantity
 
     def check(self, orders):  # TODO test
-        items_product_ids = [product_id for product_id in self._items.keys()]
+        items_product_ids = [product_id for product_id in self.items.keys()]
         items_to_order = []
         for order in orders:
             # check if item is not in inventory OR inventory doesn't have enough of item

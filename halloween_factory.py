@@ -21,14 +21,14 @@ class HalloweenFactory(ItemFactory):
 
 class RCSpider(Toy):
     spider_types = ["Tarantula", "Wolf Spider"]
-    speed_range = list(range[0,100])
-    jump_height = list(range[0, 100])
+    speed_range = list(range(0, 100))
+    jump_height = list(range(0, 100))
 
     attributes = {
         "spider_type": [spider_types, f"Spider type can only be {' or '.join(spider_types)}."],
         "has_batteries": [["Y"], "RCSpider requires batteries. Property has_batteries should be 'Y'."],
         "speed": [speed_range, f"RCSpider must have speed between {speed_range[0]} and {speed_range[-1]}"],
-        "jump_height":[jump_height, f"RCSpider must have jump height between {jump_height[0]} and {jump_height[-1]}"]
+        "jump_height": [jump_height, f"RCSpider must have jump height between {jump_height[0]} and {jump_height[-1]}"]
     }
 
     def __init__(self, item_attributes):

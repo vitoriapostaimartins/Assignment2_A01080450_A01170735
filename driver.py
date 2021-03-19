@@ -23,7 +23,6 @@ class Menu:
 
     def show_menu(self):
         print("Welcome the Store")
-        input_map = {}
 
         while True:
             choice = self._show_options()
@@ -50,11 +49,12 @@ class Menu:
             operation()
 
     def _process_orders(self):
-        order_name = "orders_checkinventory.xlsx"
+        order_name = "orders_blankvalues.xlsx"
         self._store.process_orders(order_name)
 
     def _check_inventory(self):
         self.store.check_inventory()
+
 
 def main():
     menu = Menu()

@@ -21,7 +21,7 @@ class EasterFactory(ItemFactory):
 
 class RobotBunny(Toy):
     colours = ["Orange", "Blue", "Pink"]
-    num_sound = list(range[0, 100])
+    num_sound = list(range(0, 100))
 
     attributes = {
         "colour": [colours, f"Colour can only be {' or '.join(colours)}."],
