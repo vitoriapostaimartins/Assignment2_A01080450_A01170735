@@ -43,7 +43,9 @@ class Menu:
         Exit the menu and print the daily transaction report.
         """
         orders = self.store.orders
-        DailyTransactionReport.create_report(orders)
+        file_name = DailyTransactionReport.create_report(orders)
+        print(f"Successfully printed report to: {file_name}")
+        print("-------------- Exited Program ---------------------")
 
     def show_menu(self):
         """

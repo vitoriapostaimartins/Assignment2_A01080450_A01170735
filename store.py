@@ -125,6 +125,8 @@ class DailyTransactionReport:
 
             text_file.write(data)
 
+        return file_name
+
     @staticmethod
     def get_order_details(orders, data):
         """
