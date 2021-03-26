@@ -18,24 +18,33 @@ class Store:
         """
         Initialize a Store object with an empty list of Orders and an empty Inventory.
         """
-        self._orders = []
+        self._current_orders = []
+        self._order_files = []
         self._inventory = Inventory()
 
     @property
-    def orders(self):
+    def order_files(self):
         """
-        Get the list of orders from this Store.
+        Get the lists of orders made from each excel file processed wrapped in a list.
+        :return: list of lists of Orders
+        """
+        return self._order_files
+
+    @property
+    def current_orders(self):
+        """
+        Get the list of orders that are currently being processes from this Store.
         :return: a list
         """
-        return self._orders
+        return self._current_orders
 
-    @orders.setter
-    def orders(self, value):
+    @current_orders.setter
+    def current_orders(self, value):
         """
-        Set the list of orders in this Store.
+        Set the list of orders that are currently being processed in this Store.
         :param value: a list
         """
-        self._orders = value
+        self._current_orders = value
 
     @property
     def inventory(self):
@@ -61,13 +70,15 @@ class Store:
         item_processor = ItemProcessor()
 
         # Process orders from excel file
-        self.orders.append(order_processor.process_orders(order_name))
+
+        self.current_orders = (order_processor.process_orders(order_name))
+        self.order_files.append(self.current_orders)
 
         # Check inventory for order quantities
         while True:
 
             # Check if there are items to order
-            items_to_order = self.inventory.check_inventory(self.orders)
+            items_to_order = self.inventory.check_inventory(self.current_orders)
 
             # Process the items to order, adding the created items to the inventory
             try:
@@ -86,7 +97,7 @@ class Store:
         """
         Remove orders that have enough quantity in the inventory.
         """
-        for order in self.orders:
+        for order in self.current_orders:
             quantity = order.item_attributes.get('quantity')
             self.inventory.remove_from_inventory(order.product_id, quantity)
 
@@ -103,11 +114,12 @@ class DailyTransactionReport:
     """
 
     @staticmethod
-    def create_report(orders):
+    def create_report(orders_list):
         """
         Create daily transaction report and write it to a new file and indicate the time of exiting the system in the
          file name.
-        :param orders: a list of Orders
+        :param orders_list:  a list of lists of Orders [[]]
+        :return: a string
         """
 
         # get the current time
@@ -121,22 +133,26 @@ class DailyTransactionReport:
             data = "HOLIDAY STORE - DAILY TRANSACTION REPORT (DRT) \n" \
                    f"{file_time.strftime('%d-%m-%Y %H:%M')} \n"
 
-            data = DailyTransactionReport.get_order_details(orders, data)
+            # For each list of orders in orders list, get the transaction details
+            order_data = ""
+            for orders in orders_list:
+                order_data += DailyTransactionReport.get_order_details(orders)
 
+            data += order_data
             text_file.write(data)
 
         return file_name
 
     @staticmethod
-    def get_order_details(orders, data):
+    def get_order_details(orders):
         """
         Get the details for each order and add them as a line to a multi-line string.
         :param orders: a list
-        :param data: a string
         :return: a string
         """
 
         # Get the details for each order in the orders list
+        data = "-"*30 + "\n\n"
         for order in orders:
             order_no = order.order_number
             order_item = order.item
@@ -148,6 +164,7 @@ class DailyTransactionReport:
             if order.error:
                 data += f"Order {order_no}, Could not process order data was corrupted, {order.error}\n"
             else:
-                data += f"Order {order_no}, Item {order_item}, Product ID {order_product_id}, Name \"{order_name}\", Quantity {order_quantity}\n"
+                data += f"Order {order_no}, Item {order_item}, Product ID {order_product_id}, Name \"{order_name}\", " \
+                        f"Quantity {order_quantity}\n "
 
-        return data
+        return data + "\n"

@@ -42,9 +42,9 @@ class Menu:
         """
         Exit the menu and print the daily transaction report.
         """
-        orders = self.store.orders
+        orders = self.store.order_files
         file_name = DailyTransactionReport.create_report(orders)
-        print(f"Successfully printed report to: {file_name}")
+        print(f"\nSuccessfully printed report to: {file_name}")
         print("-------------- Exited Program ---------------------")
 
     def show_menu(self):
@@ -60,7 +60,7 @@ class Menu:
 |_||_\___/_|_|_\__,_\__,_|\_, | |___|\_/\___|_|  \_, \__,_\__,_|\_, |
                           |__/                   |__/           |__/ 
         """)
-        print("\t\t\t The time to celebrate is today!\n" \
+        print("\t\t\t The time to celebrate is today!\n"
               "-------------------------------------------------------------------")
         # Prompt the user to select a choice from the menu
         while True:
