@@ -61,7 +61,7 @@ class Store:
         item_processor = ItemProcessor()
 
         # Process orders from excel file
-        self.orders = order_processor.process_orders(order_name)
+        self.orders.append(order_processor.process_orders(order_name))
 
         # Check inventory for order quantities
         while True:
@@ -117,7 +117,7 @@ class DailyTransactionReport:
         # set the properly-formatted file name
         file_name = f"DTR_{day}{month}{year}_{hour}{minute}.txt"
 
-        with open(file_name, mode="w", encoding="utf-8") as text_file:
+        with open(file_name, mode="a", encoding="utf-8") as text_file:
             data = "HOLIDAY STORE - DAILY TRANSACTION REPORT (DRT) \n" \
                    f"{file_time.strftime('%d-%m-%Y %H:%M')} \n"
 

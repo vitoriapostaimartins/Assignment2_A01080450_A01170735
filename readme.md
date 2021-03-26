@@ -12,3 +12,6 @@ A menu for the store should display choices for
 ### Processing Orders
 You will be prompted to enter a `.xlsx` file to read orders from, or
 you may choose the default by entering `d`.
+
+### Extra
+- Ascii Art with the Store name.
