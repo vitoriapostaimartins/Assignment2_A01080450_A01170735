@@ -18,27 +18,30 @@ class ItemFactory(abc.ABC):
 
     @staticmethod
     @abc.abstractmethod
-    def make_toy() -> Toy:
+    def make_toy(**item_attributes) -> Toy:
         """
         Create a Toy type item.
+        :param item_attributes: a dictionary
         :return: a Toy
         """
         pass
 
     @staticmethod
     @abc.abstractmethod
-    def make_stuffed_animal() -> StuffedAnimal:
+    def make_stuffed_animal(**item_attributes) -> StuffedAnimal:
         """
         Create a StuffedAnimal type item.
+        :param item_attributes: a dictionary
         :return: a StuffedAnimal
         """
         pass
 
     @staticmethod
     @abc.abstractmethod
-    def make_candy() -> Candy:
+    def make_candy(**item_attributes) -> Candy:
         """
         Create a Candy type item.
+        :param item_attributes: a dictionary
         :return: a Candy
         """
         pass
