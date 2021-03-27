@@ -31,11 +31,11 @@ class Menu:
         Show the menu options.
         :return: an int
         """
-        print("Menu")
+        print("\nMenu")
         print("1 - Process Orders\n"
               "2 - Check Inventory\n"
               "3 - Exit\n")
-        choice = int(input("Please choose an option from the above"))
+        choice = input("Please choose an option from the above")
         return choice
 
     def _exit(self):
@@ -64,7 +64,12 @@ class Menu:
               "-------------------------------------------------------------------")
         # Prompt the user to select a choice from the menu
         while True:
-            choice = self._show_options()
+
+            try:
+                choice = int(self._show_options())
+            except ValueError:
+                print("\nInvalid choice. Please try again.")
+                continue
 
             if choice == 3:
                 self._exit()
@@ -78,12 +83,8 @@ class Menu:
                     2: self._check_inventory,
                 }
 
-            # Catch any string values
-            try:
-                operation = input_map[choice]
-            except ValueError:
-                print("Invalid choice. Please try again.")
-                continue
+            operation = input_map[choice]
+
 
             operation()
 
@@ -100,14 +101,14 @@ class Menu:
         :return: a string
         """
         while True:
-            filename = input("Please enter a file name if you would like to enter it manually. Press d for default: ")
+            filename = input("\nPlease enter a file name if you would like to enter it manually. Press d for default: ")
             if filename == "d":
                 filename = "orders.xlsx"
                 break
             extension = os.path.splitext(filename)[1]
             if self._check_filename(filename, extension):
                 break
-            print("Please enter a valid and existent xlsx file or d.")
+            print("\nPlease enter a valid and existent xlsx file or d.")
         return filename
 
     def _check_filename(self, path, file_extension):
