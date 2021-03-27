@@ -104,7 +104,8 @@ class DancingSkeleton(StuffedAnimal):
 
 class PumpkinCaramelToffee(Candy):
     """
-    Class that represents a Pumpkin Caramel Toffee candy, that can come in different varieties and may contain lactose and nuts.
+    Class that represents a Pumpkin Caramel Toffee candy, that can come in different varieties and may contain
+    lactose and nuts.
     """
     varieties = ["Sea Salt", "Regular"]
 

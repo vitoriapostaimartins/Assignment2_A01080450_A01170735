@@ -10,6 +10,7 @@ class ChristmasFactory(ItemFactory):
     Class that represents a Factory for all Items related to the Christmas season.
     It is responsible for creating all types of Christmas Items offered by a Store.
     """
+
     def __init__(self, **item_attributes):
         """
         Initialize a Christmas Factory object with a dictionary of attributes of the Christmas Item it should yield.
@@ -91,6 +92,7 @@ class SantasWorkshop(Toy):
         for measurement in item_attributes.get("dimensions"):
             if measurement <= 0:
                 raise InvalidDataError("Dimensions have to be non-zero positive numbers")
+
 
 class Reindeer(StuffedAnimal):
     """

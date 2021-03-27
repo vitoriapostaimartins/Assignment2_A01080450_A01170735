@@ -116,8 +116,8 @@ class StuffedAnimal(Item):
     fabric_types = ["Linen", "Cotton", "Acrylic"]
 
     attribute_errors = {"stuffing": [stuffing_types, f"Stuffing can only be {', '.join(stuffing_types)}"],
-                  "size": [sizes, f"Sizes can only be {', '.join(sizes)}"],
-                  "fabric": [fabric_types, f"Fabric types can only be {', '.join(fabric_types)}"]}
+                        "size": [sizes, f"Sizes can only be {', '.join(sizes)}"],
+                        "fabric": [fabric_types, f"Fabric types can only be {', '.join(fabric_types)}"]}
 
     def __init__(self, **item_attributes):
         """

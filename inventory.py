@@ -1,6 +1,5 @@
-"""
-Module that contains Inventory class and its methods to add/remove items, checking the inventory, as well as its properties.
-"""
+"""Module that contains Inventory class and its methods to add/remove items, checking the inventory, as well as its
+properties. """
 
 
 class Inventory:
