@@ -85,7 +85,6 @@ class Menu:
 
             operation = input_map[choice]
 
-
             operation()
 
     def _process_orders(self):
